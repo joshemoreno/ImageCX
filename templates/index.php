@@ -1,16 +1,12 @@
 <?php
 include ('../config/connection.php');
 
-if (isset($_GET['ciudad'])){
-  // getLink();
   $id = getAll();
   $data = getEach($id);
-  $phone = getPhoneLink($data);
-  $phones = getPhone($phone);
-  var_dump($phones);
-  // $name=array();
-  $ciudad = $_GET['ciudad'];
-}
+  $phonesLinks = getPhonesLinks($data);
+  $phones = getPhone($phonesLinks);
+  $emailsLinks = getEmailsLinks($data);
+  $emails = getEmail($emailsLinks);
 
 ?>
 <!DOCTYPE html>
@@ -36,20 +32,6 @@ if (isset($_GET['ciudad'])){
       </div>
     </div>
     <br>
-    <div class="col-md-6">
-      <h3>Buscar por ciudad</h3>
-    </div>
-    <div class="col-md-6">
-      <form action="" method="get">
-      <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Ciudad" name="ciudad">
-      <div class="input-group-append">
-        <button class="btn btn-success" type="summit">Buscar</button>
-      </div>
-    </div>
-      </form>
-
-    </div>
   </div>
   <div class="container container-fluid">
     <table class="table table-striped">
@@ -73,22 +55,30 @@ if (isset($_GET['ciudad'])){
               $city[$i] = "No registra";
           }else{
               $city[$i] = $data[$i]['address']['city'];
+          }if(!isset($phones[$i])){
+              $phone[$i] = "No registra";
+          }else{
+              $phone[$i] = $phones[$i]['number'];
+          }if(!isset($emails[$i])){
+              $email[$i] = "No registra";
+          }else{
+              $email[$i] = $emails[$i]['address'];
           }
-              $phone[$i] = $data[$i]['phones']['links'][0]['href'];
+              
               ?>
               <tr>
               <td><?php echo $name[$i] ?></td>
               <td><?php echo $city[$i] ?></td>
               <td><?php echo $phone[$i] ?></td>
+              <td><?php echo $email[$i] ?></td>
+              <td>
+                    <a href="update.php?id=<?php echo $data[$i]['id'];?>" class="btn btn-warning">Editar</a>
+                    <a href="delete.php?id=<?php echo $data[$i]['id'];?>" class="btn btn-danger">Eliminar</a>
+              </td>
               <?php
 
         } 
       ?>
-        <!-- <tr> -->
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-          <td>@mdo</td>  
         </tr>
       </tbody>
     </table>

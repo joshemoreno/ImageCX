@@ -32,12 +32,11 @@ function getEach($id){
     return $data;
 }
 // trae primer link phone
-function getPhoneLink($data){
+function getPhonesLinks($data){
     $phone=array();
     for ($i = 0; $i <= 10; $i++) {
-        $phone[$i] = $data[$i]['phones']['links'][0]['href'];
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $phone[$i]);
+        curl_setopt($ch, CURLOPT_URL, $data[$i]['phones']['links'][0]['href']);
         curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -48,12 +47,31 @@ function getPhoneLink($data){
     return $data;
 }
 // trae el segundo link para phone 
-function getPhone($phone){
+function getPhone($data){
     $phones=array();
     for ($i = 0; $i <= 10; $i++) {
-        $phones[$i] = $phone[$i]['items'][0]['href'];
+        if(isset($data[$i]['items'][0]['href'])){
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $data[$i]['items'][0]['href']);
+            curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            $phones[$i]=json_decode($response,true);
+            curl_close($ch);
+        }
+        else{
+                $phones[$i]=NULL;
+            }
+    }
+    return($phones);
+}
+// trae primer link email
+function getEmailsLinks($data){
+    $phone=array();
+    for ($i = 0; $i <= 10; $i++) {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $phones[$i]);
+        curl_setopt($ch, CURLOPT_URL, $data[$i]['emails']['links'][0]['href']);
         curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -61,7 +79,28 @@ function getPhone($phone){
         $data[$i]=json_decode($response,true);
         curl_close($ch);
     }
-    return $phone;
+    return $data;
 }
+// trae el segundo link para email
+function getEmail($data){
+    $emails=array();
+    for ($i = 0; $i <= 10; $i++) {
+        if(isset($data[$i]['items'][0]['href'])){
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $data[$i]['items'][0]['href']);
+            curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $response = curl_exec($ch);
+            $emails[$i]=json_decode($response,true);
+            curl_close($ch);
+        }
+        else{
+                $emails[$i]=NULL;
+            }
+    }
+    return($emails);
+}
+
 ?>
 
