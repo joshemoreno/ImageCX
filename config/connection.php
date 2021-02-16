@@ -102,5 +102,102 @@ function getEmail($data){
     return($emails);
 }
 
+// POST
+
+function postName($name){
+    $data= array('lookupName'=>$name);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,'https://imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts');
+    curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+    // curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
+    curl_setopt($ch, CURLOPT_POST, true);
+    $data=json_encode($data);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_exec($ch);
+}
+
+// PUT
+function getOneByID($id){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,'https://imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/'.$id);
+    curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    $data=json_decode($response,true);
+    curl_close($ch);
+    return $data;
+}
+
+function getPhonesLinksByID($data){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $data['phones']['links'][0]['href']);
+    curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    $data=json_decode($response,true);
+    curl_close($ch);
+    return $data;
+}
+
+function getPhoneByID($data){
+    $ch = curl_init();
+    $phones="";
+    if(isset($data['items'][0]['href'])){
+        curl_setopt($ch, CURLOPT_URL, $data['items'][0]['href']);
+        curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $phones=json_decode($response,true);
+        curl_close($ch);
+    }else{
+        $phones=['number'=>null];
+    }
+    return($phones);
+}
+
+function getEmailsLinksByID($data){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $data['emails']['links'][0]['href']);
+    curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    $data=json_decode($response,true);
+    curl_close($ch);
+    return $data;
+}
+
+function getEmailByID($data){
+    $ch = curl_init();
+    $emails="";
+    if(isset($data['items'][0]['href'])){
+        curl_setopt($ch, CURLOPT_URL, $data['items'][0]['href']);
+        curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $emails=json_decode($response,true);
+        curl_close($ch);
+    }else{
+        $emails=['address'=>null];
+    }
+    return($emails);
+}
+
+// DELETE
+
+function deleteByID($id){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,'https://imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/'.$id);
+    curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+    curl_exec($ch);
+    curl_close($ch);
+}
+
+
 ?>
 

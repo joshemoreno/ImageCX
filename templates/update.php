@@ -1,3 +1,13 @@
+<?php
+include ('../config/connection.php');
+$id = $_GET['id'];
+$data = getOneByID($id);
+$phonesLinks = getPhonesLinksByID($data);
+$phones = getPhoneByID($phonesLinks);
+$emailsLinks = getEmailsLinksByID($data);
+$emails = getEmailByID($emailsLinks);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +25,7 @@
   <div class="container container-fluid top">
     <div class="row">
       <div class="col-md-6">
-        <h2>Agregar <b>contacto</b></h2>
+        <h2>Actualizar <b>contacto</b></h2>
       </div>
       <div class="col-md-6 add">
         <a href="index.php" class="btn btn-info add-new"> Regresar</a>
@@ -28,24 +38,43 @@
     <div class="input-group">
       <div class="col-md-6">
         <label>Nombre:</label>
-        <input type="text" name="nombres" id="nombres" class='form-control' maxlength="100" required>
+        <input type="text" name="nombres" id="nombres" class='form-control' maxlength="100" required value="<?php 
+        if(!isset($data['lookupName'])){
+          echo "No registra";
+        }else{
+          echo ($data['lookupName']);
+        }?>">
       </div>
       <div class="col-md-6">
         <label>Ciudad:</label>
-        <input name="ciudad" id="ciudad" class='form-control' maxlength="255" required>
+        <input name="ciudad" id="ciudad" class='form-control' maxlength="255" required value="<?php 
+        if(!isset($data['address']['city'])){
+          echo "No registra";
+        }else{
+          echo ($data['address']['city']);
+        }?>">
       </div>
       <div class="col-md-6">
         <label>Teléfono:</label>
-        <input type="text" name="telefono" id="telefono" class='form-control' maxlength="15" required>
+        <input type="text" name="telefono" id="telefono" class='form-control' maxlength="15" required value="<?php 
+        if(!isset($phones['number'])){
+          echo "No registra";
+        }else{
+          echo($phones['number']);
+        }?>">
       </div>
       <div class="col-md-6">
         <label>Correo electrónico:</label>
-        <input type="email" name="correo_electronico" id="correo_electronico" class='form-control' maxlength="64"
-          required>
+        <input type="email" name="correo_electronico" id="correo_electronico" class='form-control' maxlength="64" required value="<?php
+        if(!isset($emails['address'])){
+          echo "No registra";
+        }else{
+          echo($emails['address']);
+        }?>">
       </div>
       <div class="col-md-12 pull-right">
         <hr>
-        <button type="submit" class="btn btn-success">Guardar datos</button>
+        <button type="submit" class="btn btn-success">Actualizar datos</button>
       </div>
     </div>
   </form>

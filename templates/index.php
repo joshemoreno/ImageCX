@@ -1,13 +1,17 @@
 <?php
 include ('../config/connection.php');
 
-  $id = getAll();
-  $data = getEach($id);
-  $phonesLinks = getPhonesLinks($data);
-  $phones = getPhone($phonesLinks);
-  $emailsLinks = getEmailsLinks($data);
-  $emails = getEmail($emailsLinks);
+$id = getAll();
+$data = getEach($id);
+$phonesLinks = getPhonesLinks($data);
+$phones = getPhone($phonesLinks);
+$emailsLinks = getEmailsLinks($data);
+$emails = getEmail($emailsLinks);
 
+// if (isset($_GET['id'])){
+//     $id = $_GET['id'];
+//     deleteByID($id);
+// }
 ?>
 <!DOCTYPE html>
 <html lang="en">

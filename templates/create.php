@@ -1,3 +1,15 @@
+<?php
+include ('../config/connection.php');
+
+if((isset($_POST) && !empty($_POST))) {
+    $name = $_POST['name'];
+    $city = $_POST['city'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    // echo($name.$city.$phone.$email);
+    postName($name);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,24 +36,23 @@
     <br>
   </div>
   <div class="container container-fluid">
-  <form method="post">
+  <form method="post" accion="create.php" >
     <div class="input-group">
       <div class="col-md-6">
         <label>Nombre:</label>
-        <input type="text" name="nombres" id="nombres" class='form-control' maxlength="100" required>
+        <input type="text" name="name" id="name" class='form-control' maxlength="100" required>
       </div>
       <div class="col-md-6">
         <label>Ciudad:</label>
-        <input name="ciudad" id="ciudad" class='form-control' maxlength="255" required>
+        <input name="city" id="city" class='form-control' maxlength="255" required>
       </div>
       <div class="col-md-6">
         <label>Teléfono:</label>
-        <input type="text" name="telefono" id="telefono" class='form-control' maxlength="15" required>
+        <input type="text" name="phone" id="phone" class='form-control' maxlength="15" required>
       </div>
       <div class="col-md-6">
         <label>Correo electrónico:</label>
-        <input type="email" name="correo_electronico" id="correo_electronico" class='form-control' maxlength="64"
-          required>
+        <input type="email" name="email" id="email" class='form-control' maxlength="64" required>
       </div>
       <div class="col-md-12 pull-right">
         <hr>
