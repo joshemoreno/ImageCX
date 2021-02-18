@@ -7,6 +7,17 @@ $phones = getPhoneByID($phonesLinks);
 $emailsLinks = getEmailsLinksByID($data);
 $emails = getEmailByID($emailsLinks);
 
+if((isset($_POST) && !empty($_POST))) {
+  $name = $_POST['name'];
+  $city = $_POST['city'];
+  $phone = $_POST['phone'];
+  $email = $_POST['email'];
+
+  putName($id,$name,$city);
+  putPhone($phonesLinks,$phone);
+  putEmail($emailsLinks,$email);
+  header('Location: http://localhost/imagecx/templates/index.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +49,7 @@ $emails = getEmailByID($emailsLinks);
     <div class="input-group">
       <div class="col-md-6">
         <label>Nombre:</label>
-        <input type="text" name="nombres" id="nombres" class='form-control' maxlength="100" required value="<?php 
+        <input type="text" name="name" id="name" class='form-control' maxlength="100" required value="<?php 
         if(!isset($data['lookupName'])){
           echo "No registra";
         }else{
@@ -47,7 +58,7 @@ $emails = getEmailByID($emailsLinks);
       </div>
       <div class="col-md-6">
         <label>Ciudad:</label>
-        <input name="ciudad" id="ciudad" class='form-control' maxlength="255" required value="<?php 
+        <input name="city" id="city" class='form-control' maxlength="255" required value="<?php 
         if(!isset($data['address']['city'])){
           echo "No registra";
         }else{
@@ -56,7 +67,7 @@ $emails = getEmailByID($emailsLinks);
       </div>
       <div class="col-md-6">
         <label>Teléfono:</label>
-        <input type="text" name="telefono" id="telefono" class='form-control' maxlength="15" required value="<?php 
+        <input type="number" name="phone" id="phone" class='form-control' maxlength="15" required value="<?php 
         if(!isset($phones['number'])){
           echo "No registra";
         }else{
@@ -65,7 +76,7 @@ $emails = getEmailByID($emailsLinks);
       </div>
       <div class="col-md-6">
         <label>Correo electrónico:</label>
-        <input type="email" name="correo_electronico" id="correo_electronico" class='form-control' maxlength="64" required value="<?php
+        <input type="email" type="email" name="email" class='form-control' maxlength="64" required value="<?php
         if(!isset($emails['address'])){
           echo "No registra";
         }else{

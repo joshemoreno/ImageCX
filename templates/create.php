@@ -6,8 +6,10 @@ if((isset($_POST) && !empty($_POST))) {
     $city = $_POST['city'];
     $phone = $_POST['phone'];
     $email = $_POST['email'];
-    // echo($name.$city.$phone.$email);
-    postName($name);
+
+    $id=postName($name,$city);
+    // postPhone($id,$phone);
+    
 }
 ?>
 <!DOCTYPE html>
@@ -48,7 +50,7 @@ if((isset($_POST) && !empty($_POST))) {
       </div>
       <div class="col-md-6">
         <label>Teléfono:</label>
-        <input type="text" name="phone" id="phone" class='form-control' maxlength="15" required>
+        <input type="number" name="phone" id="phone" class='form-control' maxlength="15" required>
       </div>
       <div class="col-md-6">
         <label>Correo electrónico:</label>

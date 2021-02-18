@@ -104,16 +104,51 @@ function getEmail($data){
 
 // POST
 
-function postName($name){
-    $data= array('lookupName'=>$name);
+function postName($name,$city){
+    $names = explode(" ", $name);
+    $first = $names[0];
+    $last = $names[1];
+    $data= array(
+        'name' => array(
+            'first' => $first,
+            "last" => $last
+        ),
+        'address' => array(
+            'city' => $city
+            )
+    );
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,'https://imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts');
     curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
-    // curl_setopt($ch, CURLOPT_SAFE_UPLOAD, false);
     curl_setopt($ch, CURLOPT_POST, true);
     $data=json_encode($data);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-    curl_exec($ch);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response=curl_exec($ch);
+    $newContact=json_decode($response,true);
+    curl_close($ch);
+    $id = $newContact['id'];
+    return $id;
+}
+
+function postPhone($id,$phone){
+    $data= array('items'=>[
+        array("rel" => "canonical")
+    ]);
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,'https://imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/757/phones');
+    curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+    curl_setopt($ch, CURLOPT_POST, true);
+    $data=json_encode($data);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response=curl_exec($ch);
+    $newContact=json_decode($response,true);
+    curl_close($ch);
+    var_dump($newContact);
+    // $id = $newContact['id'];
+    return $newContact;
+    // echo($data);
 }
 
 // PUT
@@ -186,6 +221,78 @@ function getEmailByID($data){
     }
     return($emails);
 }
+
+function putName($id,$name,$city){
+    $names = explode(" ", $name);
+    if(count($names)>2){
+        $first = $names[0]." ".$names[1];
+        $last = $names[2]." ".$names[3];
+    }else{
+        $first = $names[0];
+        $last = $names[1];
+    }
+    $data= array(
+        'name' => array(
+            'first' => $first,
+            "last" => $last
+        ),
+        'address' => array(
+            'city' => $city
+            )
+    );
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,'https://imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/'.$id);
+    curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+    $data=json_encode($data);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response=curl_exec($ch);
+    $newContact=json_decode($response,true);
+    curl_close($ch);
+    var_dump($newContact);
+}
+
+function putPhone($url,$phone){
+    $data= array(
+        'number' => $phone
+    );
+    $ch = curl_init();
+    if(isset($url['items'][0]['href'])){
+        curl_setopt($ch, CURLOPT_URL, $url['items'][0]['href']);
+        curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+        $data=json_encode($data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response=curl_exec($ch);
+        $newContact=json_decode($response,true);
+        curl_close($ch);
+    }else{
+        null;
+    }
+}
+
+function putEmail($url,$email){
+    $data= array(
+        'address' => $email
+    );
+    $ch = curl_init();
+    if(isset($url['items'][0]['href'])){
+        curl_setopt($ch, CURLOPT_URL, $url['items'][0]['href']);
+        curl_setopt($ch, CURLOPT_USERPWD, 'ICXCandidate:Welcome2021');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+        $data=json_encode($data);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response=curl_exec($ch);
+        $newContact=json_decode($response,true);
+        curl_close($ch);
+    }else{
+        null;
+    }
+}
+
 
 // DELETE
 
